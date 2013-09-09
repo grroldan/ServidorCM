@@ -8,7 +8,6 @@ import java.net.*;
 import java.io.*;
 import loggercm.*;
 import java.util.Properties;
-import java.util.logging.Level;
 /**
  *
  * @author usuario
@@ -66,15 +65,19 @@ public class ServidorCM extends RegistroHilos {
     * lee el puerto donde escucha el proceso
     -------------------------------------------------------------------------*/
     private boolean leeParms() {
-        try {
-            Properties propiedades = new Properties();
-            propiedades.load(new FileInputStream(System.getProperty("user.dir") + 
-                             "\\src\\propiedades\\confcm.properties"));
-            puerto = Integer.parseInt(propiedades.getProperty("puerto"));
-            return true;
-        } catch (IOException ex) {
-          return false;  
-        }
-    }
+          Properties propiedades = new Properties();
+          /* para incluir el archivo *.properties dentro del jar de distribucion se debe 
+           * crear una carpeta llamada (por ejemplo) Resources y dentro un paquete llamado propiedades.
+           * Dentro de ese paquete se añade el archivo confcm.porperties y se lo lee como sigue:
+           */
+          //InputStream archivo = this.getClass().getClassLoader().getResourceAsStream("propiedades/confcm.properties");          
+          try {
+             propiedades.load(new FileInputStream(System.getProperty("user.dir") + "\\confcm.properties"));
+             puerto = Integer.parseInt(propiedades.getProperty("puerto"));
+             return true;
+          } catch (IOException e) {
+            return false;
+          }
+   }
     
 }
